@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<style>
+	#body{
+	background-color:white;
+	color:black;
+		 }
+		 
+table{
+	border: 1px double black;
+    float:center;
+ 	padding:25px;
+ 	width: 100%;
+    line-height:50px;
+    table-layout: fixed;
+    font-family: 'Lato', sans-serif;
+    text-align: center;	
+ 	} 
+ tr {
+ 	float:center;
+    line-height:50px;
+    color: #2B2B2B;
+    table-layout: fixed;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+}
+
+th{
+	border: 1px solid black;
+	float:center;
+    line-height:50px;
+    color: #2B2B2B;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+	}
+</style>
+
+<body>
+	
+	<h1 style="float:center;"> Machadalo Angular Assignment </h1>
+
+<div data-ng-app="myApp" ng-controller="myCtrl" data-ng-init="total='$scope.total'">
+	
+	Order By: <select ng-model="sortColumn" >
+				<option value="name"> Name ASC</option>
+				<option value="gender">Gender ASC</option>
+				<option value="-English">English DESC</option>		
+				<option value="-Hindi">Hindi DESC</option>
+			</select>
+		
+	<table>	
+			<th>NAME</th>
+			<th>AGE</th>
+			<th>GENDER</th>
+			<th>ENGLISH/100</th>
+			<th>HINDI/100</th>
+			<th>AVERAGE/100</th>
+			
+		<tr ng-repeat ="x in names | orderBy:sortColumn">
+			<td>{{x.name}}</td>
+			<td>{{x.age}}</td>
+			<td>{{x.gender}}</td>
+			<td><input type="text" data-ng-model="x.English"></td>
+			<td><input type="text" data-ng-model="x.Hindi"></td>
+			<td>{{((x.English+x.Hindi)/2)}}</td>
+			<td >
+            	<button><a href="" ng-click="delete(x)" style="text-decoration:none;">Delete</a></button>
+        	</td>
+		</tr>
+	</table>
+	
+	<table ng-model ="t">
+		<tr><td>The total is: {{t}} </td></tr>
+		<tr><td ng-repeat="x in names |orderBy:'-English' | limitTo:1"> {{x.name}} has the highest marks in English: {{x.English}}</td></tr>
+		<tr><td ng-repeat="x in names |orderBy:'-Hindi' | limitTo:1"> {{x.name}} has the highest marks in Hindi: {{x.Hindi}}</td></tr>
+	</table>
+	
+<script>
+	
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope)
+	{
+		{		
+				var t=0;
+				var x=[];
+				for (var i = 0; i<20; i++)
+				{
+					var R = Math.round((Math.random() * 10) * 10);	
+					x[i]=R;
+					t += R;
+				}
+		};
+	
+	
+	$scope.names = [
+	 	{name:'Priya',age:'19',gender:'Female',English:x[0], Hindi:x[1]},
+	 	{name:'Dev', age:'18' ,gender:'Male',English:x[2] ,Hindi:x[3]},
+	 	{name:'Raj',age:'18', gender:'Male',English:x[4] ,Hindi:x[5]},
+	 	{name:'Nikhil',age:'18', gender:'Male',English:x[6] ,Hindi:x[7]},
+	 	{name:'Ayushi',age:'18', gender:'Female',English:x[8] ,Hindi:x[9]},
+	 	{name:'Ayush',age:'19', gender:'Male',English:x[10] ,Hindi:x[11]},
+	 	{name:'Ram',age:'18', gender:'Male',English:x[12] ,Hindi:x[13]},
+	 	{name:'Sonal',age:'19', gender:'Female',English:x[14] ,Hindi:x[15]},
+	 	{name:'Varun',age:'18', gender:'Male',English:x[16] ,Hindi:x[17]},
+	 	{name:'Jiah', age:'18', gender:'Female',English:x[18],Hindi:x[19]}
+	 	];
+	 	
+  	$scope.t =t;
+  	$scope.sortColumn ="name";
+  	
+  	$scope.delete = function (name) 
+  	{
+    	$scope.names.splice( $scope.names.indexOf(name), 1 );
+	}	
+  	 
+});
+
+</script>	
+</div>
+</body>
+</html>
