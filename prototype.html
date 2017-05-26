@@ -7,28 +7,30 @@
 	#body{
 	background-color:white;
 	color:black;
-		 }
+	}
 		 
-table{
+	table{
 	border: 1px double black;
     float:center;
- 	padding:25px;
- 	width: 100%;
+ 	padding:15px 15px 15px 15px;
+ 	margin: 25px 25px 25px 25px;
+ 	width: 80%;
     line-height:50px;
     table-layout: fixed;
     font-family: 'Lato', sans-serif;
     text-align: center;	
  	} 
- tr {
+ 	
+ 	tr {
  	float:center;
     line-height:50px;
     color: #2B2B2B;
     table-layout: fixed;
     font-family: 'Lato', sans-serif;
     text-align: center;
-}
+	}
 
-th{
+	th{
 	border: 1px solid black;
 	float:center;
     line-height:50px;
@@ -44,12 +46,12 @@ th{
 
 <div data-ng-app="myApp" ng-controller="myCtrl" data-ng-init="total='$scope.total'">
 	
-	Order By: <select ng-model="sortColumn" >
+	Order By: <select ng-model="sortColumn">
 				<option value="name"> Name ASC</option>
 				<option value="gender">Gender ASC</option>
 				<option value="-English">English DESC</option>		
 				<option value="-Hindi">Hindi DESC</option>
-			</select>
+		</select>
 		
 	<table>	
 			<th>NAME</th>
@@ -63,17 +65,17 @@ th{
 			<td>{{x.name}}</td>
 			<td>{{x.age}}</td>
 			<td>{{x.gender}}</td>
-			<td><input type="text" data-ng-model="x.English"></td>
-			<td><input type="text" data-ng-model="x.Hindi"></td>
-			<td>{{((x.English+x.Hindi)/2)}}</td>
-			<td >
+			<td><input type="text" ng-model="x.English"></td>
+			<td><input type="text" ng-model="x.Hindi"></td>
+			<td> {{avg(x.English, x.Hindi)}}</td>
+			<td>
             	<button><a href="" ng-click="delete(x)" style="text-decoration:none;">Delete</a></button>
         	</td>
 		</tr>
 	</table>
 	
-	<table ng-model ="t">
-		<tr><td>The total is: {{t}} </td></tr>
+	<table ng-model="total">
+		<tr><td>The total is: {{total}}</td></tr>
 		<tr><td ng-repeat="x in names |orderBy:'-English' | limitTo:1"> {{x.name}} has the highest marks in English: {{x.English}}</td></tr>
 		<tr><td ng-repeat="x in names |orderBy:'-Hindi' | limitTo:1"> {{x.name}} has the highest marks in Hindi: {{x.Hindi}}</td></tr>
 	</table>
@@ -84,16 +86,13 @@ th{
 	app.controller('myCtrl', function($scope)
 	{
 		{		
-				var t=0;
-				var x=[];
-				for (var i = 0; i<20; i++)
-				{
-					var R = Math.round((Math.random() * 10) * 10);	
-					x[i]=R;
-					t += R;
-				}
+			var x=[];	
+			for (var i = 0; i<20; i++)
+			{
+				var R = Math.round((Math.random() * 10) * 10);	
+				x[i]=R;
+			}	
 		};
-	
 	
 	$scope.names = [
 	 	{name:'Priya',age:'19',gender:'Female',English:x[0], Hindi:x[1]},
@@ -107,13 +106,28 @@ th{
 	 	{name:'Varun',age:'18', gender:'Male',English:x[16] ,Hindi:x[17]},
 	 	{name:'Jiah', age:'18', gender:'Female',English:x[18],Hindi:x[19]}
 	 	];
-	 	
-  	$scope.t =t;
-  	$scope.sortColumn ="name";
+	 	 
+	$scope.sortColumn ="name";
   	
-  	$scope.delete = function (name) 
-  	{
-    	$scope.names.splice( $scope.names.indexOf(name), 1 );
+  	$scope.$watch('names', function(newVal) {
+    	var total = 0;
+    	angular.forEach(newVal, function(x) {
+    	  total += parseInt(x.English) + parseInt(x.Hindi);
+    	});
+    	$scope.total = total 
+    }, true);
+	
+	$scope.avg = function(e, h){
+ 	 if(!h) h=0;
+ 	 if(!e) e=0;
+ 	 return ( parseInt(h)+parseInt(e))/2;
+
+	}
+	
+	$scope.delete = function (name) 
+	
+	{
+		$scope.names.splice( $scope.names.indexOf(name), 1 );
 	}	
   	 
 });
