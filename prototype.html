@@ -65,8 +65,8 @@
 			<td>{{x.name}}</td>
 			<td>{{x.age}}</td>
 			<td>{{x.gender}}</td>
-			<td><input type="text" ng-model="x.English"></td>
-			<td><input type="text" ng-model="x.Hindi"></td>
+			<td><input type="number" style="text-align:center;" ng-model="x.English"></td>
+			<td><input type="number"style="text-align:center;" ng-model="x.Hindi"></td>
 			<td> {{avg(x.English, x.Hindi)}}</td>
 			<td>
             	<button><a href="" ng-click="delete(x)" style="text-decoration:none;">Delete</a></button>
@@ -77,7 +77,7 @@
 	<table ng-model="total">
 		<tr><td>The total is: {{total}}</td></tr>
 		<tr><td ng-repeat="x in names |orderBy:'-English' | limitTo:1"> {{x.name}} has the highest marks in English: {{x.English}}</td></tr>
-		<tr><td ng-repeat="x in names |orderBy:'-Hindi' | limitTo:1"> {{x.name}} has the highest marks in Hindi: {{x.Hindi}}</td></tr>
+    	<tr><td ng-repeat="x in names |orderBy:'-Hindi' | limitTo:1"> {{x.name}} has the highest marks in Hindi: {{x.Hindi}}</td></tr>
 	</table>
 	
 <script>
@@ -121,12 +121,9 @@
  	 if(!h) h=0;
  	 if(!e) e=0;
  	 return ( parseInt(h)+parseInt(e))/2;
-
 	}
 	
-	$scope.delete = function (name) 
-	
-	{
+	$scope.delete = function (name) {
 		$scope.names.splice( $scope.names.indexOf(name), 1 );
 	}	
   	 
